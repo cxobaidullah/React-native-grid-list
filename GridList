@@ -1,0 +1,171 @@
+const GRID_IMAGES = [imgA, imgB, imgC, imgD, imgE,imgF];
+
+const renderImageGrid = () => {
+    // 3-column masonry. All columns start aligned at the top; the varying
+    // per-column heights stagger the rows below to give the zig-zag look from
+    // the Figma design. The last image in each column fades out toward the
+    // content below.
+    const columns = [
+      [150, 165, 135],
+      [125, 160, 160],
+      [158, 155, 130],
+    ];
+
+    return (
+      <View style={styles.imageGrid}>
+        {columns.map((heights, colIndex) => (
+          <View key={colIndex} style={styles.gridColumn}>
+            {heights.map((h, rowIndex) => (
+              <Image
+                key={rowIndex}
+                source={GRID_IMAGES[(colIndex * 3 + rowIndex) % GRID_IMAGES.length]}
+                style={[
+                  styles.gridImage,
+                  { height: h },
+                  rowIndex === heights.length - 1 && styles.fadedImage,
+                ]}
+                resizeMode="cover"
+              />
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+const styles = {
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  header: {
+    ...Style.hpadding,
+    paddingTop: 10,
+    marginTop: Platform.OS === 'android' ? 50 : 0,
+  },
+  headerTop: {
+    ...Style.row,
+    ...Style.justifyBetween,
+    ...Style.alignCenter,
+    ...Style.marginBottom20,
+  },
+  timeText: {
+    ...Style.font16,
+    ...Style.semibold,
+    ...Style.textPrimary,
+  },
+  statusIcons: {
+    ...Style.row,
+    ...Style.alignCenter,
+    ...Style.gap4,
+  },
+  signalIcon: {
+    width: 20,
+    height: 12,
+    backgroundColor: colors.textPrimary,
+    borderRadius: 2,
+  },
+  wifiIcon: {
+    width: 16,
+    height: 12,
+    backgroundColor: colors.textPrimary,
+    borderRadius: 2,
+  },
+  batteryIcon: {
+    width: 24,
+    height: 12,
+    backgroundColor: colors.textPrimary,
+    borderRadius: 2,
+  },
+  headerBottom: {
+    ...Style.row,
+    ...Style.justifyBetween,
+    ...Style.alignCenter,
+  },
+  headerBottomRTL: {
+    flexDirection: 'row-reverse',
+  },
+  languageSelector: {
+    ...Style.row,
+    ...Style.alignCenter,
+    ...Style.gap8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    ...Style.rounded8,
+  },
+  globeIcon: {
+    height: 20,
+    width: 20,
+  },
+  languageText: {
+    ...Style.font14,
+    ...Style.textPrimary,
+    ...Style.medium,
+  },
+  chevronDown: {
+    ...Style.font10,
+    ...Style.textSecondary,
+  },
+  guestText: {
+    ...Style.font14,
+    ...Style.textSecondary,
+    ...Style.regular,
+  },
+  content: {
+    flex: 1,
+  },
+  imageGrid: {
+    flexDirection: 'row',
+    ...Style.hpadding,
+    gap: 8,
+    marginTop: 20,
+  },
+  gridColumn: {
+    flex: 1,
+    gap: 8,
+  },
+  gridImage: {
+    width: '100%',
+    ...Style.rounded8,
+  },
+  fadedImage: {
+    opacity: 0.3,
+  },
+  callToAction: {
+    ...Style.hpadding,
+    paddingBottom: 40,
+    paddingTop: 20,
+  },
+  headline: {
+    ...Style.font18,
+    ...Style.semibold,
+    ...Style.textPrimary,
+    ...Style.textStart,
+    ...Style.marginBottom12,
+    lineHeight: 20,
+  },
+  headlineRTL: {
+    textAlign: 'right',
+  },
+  buttonContainer: {
+    ...Style.gap12,
+    ...Style.marginTop16,
+  },
+  primaryButton: {
+    width: '100%',
+  },
+  secondaryButton: {
+    width: '100%',
+  },
+  guestButton: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+  },
+  guestButtonText: {
+    ...Style.font14,
+    ...Style.medium,
+    color: colors.primary,
+    textDecorationLine: 'underline',
+  },
+};
