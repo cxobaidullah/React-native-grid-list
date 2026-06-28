@@ -1,6 +1,6 @@
 const GRID_IMAGES = [imgA, imgB, imgC, imgD, imgE,imgF];
 
-const renderImageGrid = () => {
+ const renderImageGrid = () => {
     // 3-column masonry. All columns start aligned at the top; the varying
     // per-column heights stagger the rows below to give the zig-zag look from
     // the Figma design. The last image in each column fades out toward the
@@ -12,23 +12,36 @@ const renderImageGrid = () => {
     ];
 
     return (
-      <View style={styles.imageGrid}>
-        {columns.map((heights, colIndex) => (
-          <View key={colIndex} style={styles.gridColumn}>
-            {heights.map((h, rowIndex) => (
-              <Image
-                key={rowIndex}
-                source={GRID_IMAGES[(colIndex * 3 + rowIndex) % GRID_IMAGES.length]}
-                style={[
-                  styles.gridImage,
-                  { height: h },
-                  rowIndex === heights.length - 1 && styles.fadedImage,
-                ]}
-                resizeMode="cover"
-              />
-            ))}
-          </View>
-        ))}
+      <View style={styles.gridSection}>
+        <View style={styles.imageGrid}>
+          {columns.map((heights, colIndex) => (
+            <View key={colIndex} style={styles.gridColumn}>
+              {heights.map((h, rowIndex) => (
+                <Image
+                  key={rowIndex}
+                  source={
+                    GRID_IMAGES[(colIndex * 3 + rowIndex) % GRID_IMAGES.length]
+                  }
+                  style={[styles.gridImage, { height: h }]}
+                  resizeMode="cover"
+                />
+              ))}
+            </View>
+          ))}
+        </View>
+
+        {/* Fog fade at the bottom of the grid. */}
+        <View style={styles.fog} pointerEvents="none">
+          {Array.from({ length: FOG_STEPS }).map((_, i) => (
+            <View
+              key={i}
+              style={{
+                flex: 1,
+                backgroundColor: `rgba(255,255,255,${i / (FOG_STEPS - 1)})`,
+              }}
+            />
+          ))}
+        </View>
       </View>
     );
   };
@@ -113,11 +126,13 @@ const styles = {
   content: {
     flex: 1,
   },
+  gridSection: {
+    marginTop: 20,
+  },
   imageGrid: {
     flexDirection: 'row',
     ...Style.hpadding,
     gap: 8,
-    marginTop: 20,
   },
   gridColumn: {
     flex: 1,
@@ -127,8 +142,13 @@ const styles = {
     width: '100%',
     ...Style.rounded8,
   },
-  fadedImage: {
-    opacity: 0.3,
+  fog: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 110,
+    flexDirection: 'column',
   },
   callToAction: {
     ...Style.hpadding,
